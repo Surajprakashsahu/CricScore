@@ -7,7 +7,7 @@ import re
 IMAGE_FOLDER = '/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Images'
 RESPONSE_FOLDER = '/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Resposes'
 MODEL_NAME = 'gemma3:4b'
-PROMPT = 'Give me score and brief description of the match from this image in json format with keys score and description.'
+PROMPT = 'Give me score and brief commentry of the over and last bowl from this image in json format with keys score and description.'
 
 os.makedirs(RESPONSE_FOLDER, exist_ok=True)
 
