@@ -12,10 +12,10 @@ config.read('config.properties')
 # RESPONSE_FOLDER = '/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Resposes'
 # MODEL_NAME = 'gemma3:4b'
 # PROMPT = 'Give me score and brief commentry of the over and last bowl from this image in json format with keys score and description.'
-IMAGE_FOLDER = config['DEFAULT']['IMAGE_FOLDER']
-RESPONSE_FOLDER = config['DEFAULT']['RESPONSE_FOLDER']
+IMAGE_FOLDER = config['DEFAULT']['SCORE_IMAGE_FOLDER']
+RESPONSE_FOLDER = config['DEFAULT']['SCORE_RESPONSE_FOLDER']
 MODEL_NAME = config['DEFAULT']['MODEL_NAME']
-PROMPT = config['DEFAULT']['PROMPT']
+PROMPT = config['DEFAULT']['SCORE_PROMPT']
 
 os.makedirs(RESPONSE_FOLDER, exist_ok=True)
 

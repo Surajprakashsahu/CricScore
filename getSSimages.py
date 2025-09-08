@@ -4,9 +4,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime
 from selenium.webdriver.common.by import By
+import configparser
 
-IMAGE_FOLDER = '/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Images'
-URL = "https://www.cricbuzz.com/live-cricket-full-commentary/105794/eng-vs-rsa-3rd-odi-south-africa-tour-of-england-2025"
+config = configparser.ConfigParser()
+config.read('config.properties')
+
+IMAGE_FOLDER = config['DEFAULT']['IMAGE_FOLDER']
+URL = "https://www.cricbuzz.com/live-cricket-full-commentary/116774/gaw-vs-snp-25th-match-caribbean-premier-league-2025"
+Inns = "GAW Inns"
 
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 
@@ -25,7 +30,7 @@ def take_screenshot(url, save_folder):
         a_tags = driver.find_elements(By.TAG_NAME, "a")
         found = False
         for a in a_tags:
-            if a.text.strip() == "RSA Inns":
+            if a.text.strip() == Inns:
                 a.click()
                 found = True
                 time.sleep(1)  # Wait for content to update
