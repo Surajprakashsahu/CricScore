@@ -1,0 +1,83 @@
+{
+  "matchDetails": {
+    "matchType": "ODI",
+    "venue": "Wankhede Stadium, Mumbai",
+    "series": "India vs England ODI Series 2025 - 2nd ODI",
+    "toss": {
+      "winner": "India", 
+      "decision": "bat"
+    },
+    "teams": {
+      "team1": {
+        "id": "IND",
+        "name": "India",
+        "flag": "🇮🇳",
+        "totalScore": "287/4 (45.3)"
+      },
+      "team2": {
+        "id": "ENG",
+        "name": "England",
+        "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", 
+        "totalScore": "142/3 (22.0)"
+      }
+    }
+  },
+  "liveDetails": {
+    "battingTeam": "ENG",
+    "bowlingTeam": "IND",
+    "currentScore": {
+      "runs": 142,
+      "wickets": 3,
+      "overs": 22,
+      "balls": 0,
+      "target": 288,
+      "required": 146,
+      "runRate": 6.45
+    },
+    "batsmen": [
+      {
+        "name": "J Root",
+        "runs": 67,
+        "balls": 82,
+        "fours": 8,
+        "sixes": 1,
+        "onStrike": true
+      },
+      {
+        "name": "B Stokes",
+        "runs": 31,
+        "balls": 28,
+        "fours": 4,
+        "sixes": 1,
+        "onStrike": false
+      }
+    ],
+    "bowler": {
+      "name": "J Bumrah",
+      "overs": "4.0",
+      "runs": 18,
+      "wickets": 2,
+      "economy": 4.50,
+      "ballSpeed": 142
+    },
+    "lastSixBalls": [
+      {"ball": 1, "runs": 1, "type": "runs"},
+      {"ball": 2, "runs": 4, "type": "four"},
+      {"ball": 3, "runs": 0, "type": "dot"},
+      {"ball": 4, "runs": 1, "type": "runs"},
+      {"ball": 5, "runs": 6, "type": "six"},
+      {"ball": 6, "runs": 2, "type": "runs"}
+    ],
+    "thisOver": [
+      {"ball": 1, "runs": 0, "type": "dot"},
+      {"ball": 2, "runs": 1, "type": "runs"},
+      {"ball": 3, "runs": 1, "type": "wide", "extra": true},
+      {"ball": 3, "runs": 0, "type": "dot"}
+    ],
+    "winProbability": {
+      "team1": 65,
+      "team2": 35
+    },
+    "commentary": "Wide down the leg side! Bumrah under pressure here. Root looking dangerous."
+  }
+}
