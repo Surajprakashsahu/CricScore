@@ -15,7 +15,7 @@ config.read('config.properties')
 IMAGE_FOLDER = config['DEFAULT']['SCORE_IMAGE_FOLDER']
 RESPONSE_FOLDER = config['DEFAULT']['SCORE_RESPONSE_FOLDER']
 MODEL_NAME = config['DEFAULT']['MODEL_NAME']
-PROMPT = """Analyze the following image containing a cricket match scorecard. Extract all relevant data, including team scores, individual player 
+PROMPT = """Analyze the following image containing a cricket match scorecard of "Guyana Amazon Warriors vs. St. Kitts & Nevis Patriots - 25th Match". Extract all relevant data, including team scores, individual player 
 runs and wickets, overs bowled, balls faced, and strike rates. Present the extracted information in a valid JSON object adhering to the 
 following schema.
 {
