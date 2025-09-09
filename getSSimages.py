@@ -10,8 +10,8 @@ config = configparser.ConfigParser()
 config.read('config.properties')
 
 IMAGE_FOLDER = config['DEFAULT']['IMAGE_FOLDER']
-URL = "https://www.cricbuzz.com/live-cricket-full-commentary/116774/gaw-vs-snp-25th-match-caribbean-premier-league-2025"
-Inns = "GAW Inns"
+URL = config['DEFAULT']['CMTRY_URL']
+Inns = config['DEFAULT']['INNS']
 
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 

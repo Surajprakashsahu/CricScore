@@ -15,7 +15,57 @@ config.read('config.properties')
 IMAGE_FOLDER = config['DEFAULT']['SCORE_IMAGE_FOLDER']
 RESPONSE_FOLDER = config['DEFAULT']['SCORE_RESPONSE_FOLDER']
 MODEL_NAME = config['DEFAULT']['MODEL_NAME']
-PROMPT = config['DEFAULT']['SCORE_PROMPT']
+PROMPT = """Analyze the following image containing a cricket match scorecard. Extract all relevant data, including team scores, individual player 
+runs and wickets, overs bowled, balls faced, and strike rates. Present the extracted information in a valid JSON object adhering to the 
+following schema.
+{
+  "matchDetails": {
+    "matchType": "",
+    "venue": "",
+    "series": "",
+    "toss": {
+      "winner": "",
+      "decision": ""
+    },
+    "teams": {
+      "team1": {
+        "id": "",
+        "name": "",
+        "flag": "",
+        "totalScore": ""
+      },
+      "team2": {
+        "id": "",
+        "name": "",
+        "flag": "",
+        "totalScore": ""
+      }
+    }
+  },
+  "liveDetails": {
+    "battingTeam": "",
+    "bowlingTeam": "",
+    "currentScore": {
+      "runs": 0,
+      "wickets": 0,
+      "overs": 0,
+      "balls": 0,
+      "target": 0,
+      "required": 0,
+      "runRate": 0
+    },
+    "batsmen": [],
+    "bowler": {},
+    "lastSixBalls": [],
+    "thisOver": [],
+    "winProbability": {
+      "team1": 0,
+      "team2": 0
+    },
+    "commentary": ""
+  }
+}
+"""
 
 os.makedirs(RESPONSE_FOLDER, exist_ok=True)
 
