@@ -2,6 +2,12 @@ import os
 import glob
 import time
 import simpleaudio as sa
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.properties')
+
+IMAGE_FOLDER = config['DEFAULT']['AUDIO_FOLDER']
 
 folder = "/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Resposes/audio-files"
 played_files = set()

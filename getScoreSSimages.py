@@ -97,9 +97,18 @@ def take_scrolling_screenshot(url, save_folder):
     driver.quit()
     print(f"Screenshot saved: {img_path}")
 
+def is_image_folder_empty(folder):
+    """Check if the image folder is empty of PNG files."""
+    return not any(f.lower().endswith('.png') for f in os.listdir(folder))
+
 def main():
     while True:
-        take_scrolling_screenshot(URL, IMAGE_FOLDER)
+        # Only take screenshot if no PNG files exist in the folder
+        if is_image_folder_empty(IMAGE_FOLDER):
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] No images found in folder. Taking new screenshot...")
+            take_scrolling_screenshot(URL, IMAGE_FOLDER)
+        else:
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Existing image found, skipping screenshot.")
         time.sleep(60)
 
 if __name__ == "__main__":

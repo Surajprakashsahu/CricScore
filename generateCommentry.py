@@ -5,14 +5,18 @@ import os
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.properties')
 
 # Determine if a GPU is available and set the device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False).to(device)
 
-input_folder = "/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Resposes"
-output_folder = "/Users/surabhibehera/Documents/Suraj/Projects/Gemma Projects/LiveStreaming/CricScore/Resposes/audio-files"
+input_folder = config['DEFAULT']['RESPONSE_FOLDER']
+output_folder = config['DEFAULT']['AUDIO_FOLDER']
 
 def read_description_from_json(file_path):
     try:
