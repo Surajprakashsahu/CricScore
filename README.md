@@ -214,6 +214,61 @@ If migrating from the old screenshot-based system:
 
 3. **Updated configuration**: Remove image folders and add response folders
 
+## CricScore Live Streaming
+
+### Features
+- Fetches and parses live cricket scorecard and commentary from Cricbuzz
+- Translates latest ball commentary to Hindi using Ollama (gemma3:4b)
+- Generates Hindi audio for latest ball using gTTS
+- Plays audio as live commentary
+- Dynamic web page for live score display and auto-refresh
+
+### Requirements
+- Python 3.9+
+- Chrome browser and ChromeDriver (for Selenium)
+- ffmpeg (for pydub audio conversion)
+- See `requirements.txt` for Python packages
+
+### Setup
+1. Install Python packages:
+   ```sh
+   pip install -r requirements.txt
+   ```
+2. Install ffmpeg (for macOS):
+   ```sh
+   brew install ffmpeg
+   ```
+3. Ensure ChromeDriver matches your Chrome version and is in your PATH.
+
+### Usage
+
+#### Live Commentary & Audio
+Run the live flow script (updates every 30s by default, configurable in `config.properties`):
+```sh
+python live_commentary_flow.py
+```
+
+#### Live Web Scoreboard
+1. Start a local HTTP server:
+   ```sh
+   python -m http.server 8000
+   ```
+2. Open [http://localhost:8000/score_live_stream.html](http://localhost:8000/score_live_stream.html) in your browser.
+   - The page auto-refreshes every 10 seconds and shows both teams, batsmen, bowlers, and a ball-by-ball ticker.
+
+### Configuration
+- Edit `config.properties` to set URLs, model, and update interval.
+
+### Notes
+- Ollama server must be running locally for translation.
+- Audio playback uses gTTS (Google Text-to-Speech) and simpleaudio (via pydub conversion).
+- For any CORS issues, always use the HTTP server to view HTML files.
+
+### Folders
+- `resource/score/` — Scorecard JSON
+- `resource/cmtry/` — Commentary JSON
+- `resource/cmtry-audio/` — Hindi commentary audio files
+
 ## Contributing
 
 1. Fork the repository

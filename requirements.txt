@@ -6,7 +6,11 @@ ollama
 configparser
 selenium
 simpleaudio
-pillow
+pydub
+# For web live stream and JSON auto-refresh
+# (no extra package needed for HTML/JS live page)
+# For audio playback and translation
+playsound
 beautifulsoup4
 requests
 lxml
