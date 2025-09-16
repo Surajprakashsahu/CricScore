@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Cricket Score</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0001; padding: 24px; }
+        h1 { text-align: center; color: #1a73e8; }
+        .team { font-size: 1.2em; font-weight: bold; margin-top: 24px; }
+        .score { font-size: 2em; color: #222; margin: 8px 0; }
+        .section { margin-top: 18px; }
+        .batsmen, .extras, .total, .fall, .didnotbat { margin-bottom: 10px; }
+        .batsmen-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        .batsmen-table th, .batsmen-table td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+        .batsmen-table th { background: #f0f4f8; }
+        .label { font-weight: bold; }
+        .update-time { text-align: right; color: #888; font-size: 0.9em; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Live Cricket Score</h1>
+    <div id="score-section"></div>
+    <div class="update-time" id="update-time"></div>
+</div>
+<script>
+const SCORE_JSON = 'resource/score/parsed_scorecard.json';
+
+function renderScore(data) {
+    let html = '';
+    if (!data.innings || data.innings.length === 0) {
+        html = '<p>No score data available.</p>';
+        document.getElementById('score-section').innerHTML = html;
+        return;
+    }
+    data.innings.forEach(inn => {
+        html += `<div class="team">${inn.team}</div>`;
+        html += `<div class="score">${inn.score}</div>`;
+        html += '<div class="section batsmen"><span class="label">Batsmen:</span>';
+        html += '<table class="batsmen-table"><tr><th>Name</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th><th>Dismissal</th></tr>';
+        (inn.batsmen || []).forEach(b => {
+            html += `<tr><td>${b.name}</td><td>${b.runs}</td><td>${b.balls}</td><td>${b.fours}</td><td>${b.sixes}</td><td>${b.sr}</td><td>${b.dismissal}</td></tr>`;
+        });
+        html += '</table></div>';
+        if (inn.extras) {
+            html += `<div class="section extras"><span class="label">Extras:</span> ${inn.extras.total} <span style="color:#888;">${inn.extras.breakdown}</span></div>`;
+        }
+        if (inn.total) {
+            html += `<div class="section total"><span class="label">Total:</span> ${inn.total.total} <span style="color:#888;">${inn.total.info}</span></div>`;
+        }
+        if (inn.fall_of_wickets && inn.fall_of_wickets.length) {
+            html += `<div class="section fall"><span class="label">Fall of Wickets:</span> ${inn.fall_of_wickets.join(' ')}</div>`;
+        }
+        if (inn.did_not_bat && inn.did_not_bat.length) {
+            html += `<div class="section didnotbat"><span class="label">Did not bat:</span> ${inn.did_not_bat.join(', ')}</div>`;
+        }
+    });
+    document.getElementById('score-section').innerHTML = html;
+}
+
+async function fetchAndUpdate() {
+    try {
+        const resp = await fetch(SCORE_JSON + '?_=' + Date.now());
+        if (!resp.ok) throw new Error('Failed to fetch score JSON');
+        const data = await resp.json();
+        renderScore(data);
+        document.getElementById('update-time').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+    } catch (e) {
+        document.getElementById('score-section').innerHTML = '<p style="color:red;">Could not load score data.</p>';
+    }
+}
+
+fetchAndUpdate();
+setInterval(fetchAndUpdate, 10000); // update every 10 seconds
+</script>
+</body>
+</html>
