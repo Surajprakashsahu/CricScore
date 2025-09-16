@@ -1,0 +1,333 @@
+{
+  "innings": [
+    {
+      "team": "United Arab Emirates Innings",
+      "score": "172-5 (20 Ov)",
+      "batsmen": [
+        {
+          "name": "Alishan Sharafu",
+          "dismissal": "b Jiten Ramanandi",
+          "runs": "51",
+          "balls": "38",
+          "fours": "7",
+          "sixes": "1",
+          "sr": "134.21"
+        },
+        {
+          "name": "Muhammad Waseem (c)",
+          "dismissal": "run out (Aryan Bisht/Vinayak Shukla)",
+          "runs": "69",
+          "balls": "54",
+          "fours": "6",
+          "sixes": "3",
+          "sr": "127.78"
+        },
+        {
+          "name": "Asif Khan",
+          "dismissal": "b Samay Shrivastava",
+          "runs": "2",
+          "balls": "5",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "40.00"
+        },
+        {
+          "name": "Muhammad Zohaib",
+          "dismissal": "c Samay Shrivastava b Jiten Ramanandi",
+          "runs": "21",
+          "balls": "13",
+          "fours": "2",
+          "sixes": "1",
+          "sr": "161.54"
+        },
+        {
+          "name": "Harshit Kaushik",
+          "dismissal": "not out",
+          "runs": "19",
+          "balls": "8",
+          "fours": "1",
+          "sixes": "2",
+          "sr": "237.50"
+        },
+        {
+          "name": "Rahul Chopra (wk)",
+          "dismissal": "c Aamir Kaleem b Hassnain Shah",
+          "runs": "0",
+          "balls": "1",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "0.00"
+        },
+        {
+          "name": "Dhruv Parashar",
+          "dismissal": "not out",
+          "runs": "1",
+          "balls": "1",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "100.00"
+        },
+        {
+          "name": "Shakeel Ahmed",
+          "dismissal": "3",
+          "runs": "0",
+          "balls": "16",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "0"
+        },
+        {
+          "name": "Shah Faisal",
+          "dismissal": "4",
+          "runs": "0",
+          "balls": "45",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "4"
+        },
+        {
+          "name": "Aamir Kaleem",
+          "dismissal": "1",
+          "runs": "0",
+          "balls": "14",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "0"
+        },
+        {
+          "name": "Hassnain Shah",
+          "dismissal": "4",
+          "runs": "0",
+          "balls": "34",
+          "fours": "1",
+          "sixes": "0",
+          "sr": "1"
+        },
+        {
+          "name": "Jiten Ramanandi",
+          "dismissal": "4",
+          "runs": "0",
+          "balls": "24",
+          "fours": "2",
+          "sixes": "0",
+          "sr": "0"
+        },
+        {
+          "name": "Samay Shrivastava",
+          "dismissal": "4",
+          "runs": "0",
+          "balls": "38",
+          "fours": "1",
+          "sixes": "0",
+          "sr": "3"
+        }
+      ],
+      "extras": {
+        "total": "9",
+        "breakdown": "(b 0, lb 1, w 8, nb 0, p 0)"
+      },
+      "total": {
+        "total": "172",
+        "info": "(5 wkts, 20 Ov)"
+      },
+      "did_not_bat": [
+        "Haider Ali",
+        "Muhammad Rohid Khan",
+        "Jawadullah",
+        "Junaid Siddique"
+      ],
+      "fall_of_wickets": [
+        "88-1 (Alishan Sharafu, 10.6),",
+        "96-2 (Asif Khan, 12.6),",
+        "145-3 (Muhammad Zohaib, 17.5),",
+        "171-4 (Muhammad Waseem, 19.3),",
+        "171-5 (Rahul Chopra, 19.4)"
+      ],
+      "bowlers": [],
+      "powerplays": []
+    },
+    {
+      "team": "Oman Innings",
+      "score": "130-10 (18.4 Ov)",
+      "batsmen": [
+        {
+          "name": "Jatinder Singh (c)",
+          "dismissal": "b Junaid Siddique",
+          "runs": "20",
+          "balls": "10",
+          "fours": "4",
+          "sixes": "0",
+          "sr": "200.00"
+        },
+        {
+          "name": "Aamir Kaleem",
+          "dismissal": "c Harshit Kaushik b Junaid Siddique",
+          "runs": "2",
+          "balls": "2",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "100.00"
+        },
+        {
+          "name": "Hammad Mirza",
+          "dismissal": "c Dhruv Parashar b Muhammad Rohid Khan",
+          "runs": "5",
+          "balls": "7",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "71.43"
+        },
+        {
+          "name": "Wasim Ali",
+          "dismissal": "lbw b Haider Ali",
+          "runs": "1",
+          "balls": "2",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "50.00"
+        },
+        {
+          "name": "Shah Faisal",
+          "dismissal": "c Muhammad Waseem b Haider Ali",
+          "runs": "9",
+          "balls": "12",
+          "fours": "0",
+          "sixes": "1",
+          "sr": "75.00"
+        },
+        {
+          "name": "Aryan Bisht",
+          "dismissal": "b Jawadullah",
+          "runs": "24",
+          "balls": "32",
+          "fours": "2",
+          "sixes": "0",
+          "sr": "75.00"
+        },
+        {
+          "name": "Vinayak Shukla (wk)",
+          "dismissal": "c Jawadullah b Junaid Siddique",
+          "runs": "20",
+          "balls": "17",
+          "fours": "2",
+          "sixes": "0",
+          "sr": "117.65"
+        },
+        {
+          "name": "Jiten Ramanandi",
+          "dismissal": "c Alishan Sharafu b Jawadullah",
+          "runs": "13",
+          "balls": "9",
+          "fours": "2",
+          "sixes": "0",
+          "sr": "144.44"
+        },
+        {
+          "name": "Hassnain Shah",
+          "dismissal": "b Junaid Siddique",
+          "runs": "0",
+          "balls": "3",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "0.00"
+        },
+        {
+          "name": "Shakeel Ahmed",
+          "dismissal": "not out",
+          "runs": "14",
+          "balls": "10",
+          "fours": "1",
+          "sixes": "1",
+          "sr": "140.00"
+        },
+        {
+          "name": "Samay Shrivastava",
+          "dismissal": "run out (Muhammad Waseem)",
+          "runs": "6",
+          "balls": "8",
+          "fours": "1",
+          "sixes": "0",
+          "sr": "75.00"
+        },
+        {
+          "name": "Junaid Siddique",
+          "dismissal": "4",
+          "runs": "0",
+          "balls": "23",
+          "fours": "4",
+          "sixes": "0",
+          "sr": "2"
+        },
+        {
+          "name": "Muhammad Rohid Khan",
+          "dismissal": "2.4",
+          "runs": "0",
+          "balls": "27",
+          "fours": "1",
+          "sixes": "0",
+          "sr": "2"
+        },
+        {
+          "name": "Haider Ali",
+          "dismissal": "4",
+          "runs": "0",
+          "balls": "22",
+          "fours": "2",
+          "sixes": "0",
+          "sr": "3"
+        },
+        {
+          "name": "Dhruv Parashar",
+          "dismissal": "2",
+          "runs": "0",
+          "balls": "14",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "5"
+        },
+        {
+          "name": "Harshit Kaushik",
+          "dismissal": "3",
+          "runs": "0",
+          "balls": "23",
+          "fours": "0",
+          "sixes": "0",
+          "sr": "0"
+        },
+        {
+          "name": "Muhammad Jawadullah",
+          "dismissal": "3",
+          "runs": "0",
+          "balls": "18",
+          "fours": "2",
+          "sixes": "0",
+          "sr": "1"
+        }
+      ],
+      "extras": {
+        "total": "16",
+        "breakdown": "(b 0, lb 3, w 13, nb 0, p 0)"
+      },
+      "total": {
+        "total": "130",
+        "info": "(10 wkts, 18.4 Ov)"
+      },
+      "did_not_bat": [],
+      "fall_of_wickets": [
+        "7-1 (Aamir Kaleem, 0.5),",
+        "23-2 (Jatinder Singh, 2.2),",
+        "28-3 (Wasim Ali, 3.1),",
+        "32-4 (Hammad Mirza, 4.3),",
+        "50-5 (Shah Faisal, 6.5),",
+        "88-6 (Aryan Bisht, 12.5),",
+        "104-7 (Jiten Ramanandi, 14.5),",
+        "108-8 (Vinayak Shukla, 15.2),",
+        "110-9 (Hassnain Shah, 15.5),",
+        "130-10 (Samay Shrivastava, 18.4)"
+      ],
+      "bowlers": [],
+      "powerplays": []
+    }
+  ],
+  "match_info": {}
+}
