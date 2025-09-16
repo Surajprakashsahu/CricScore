@@ -1,21 +1,22 @@
-# CricScore - Live Cricket Match Analysis
+# CricScore - Live Cricket Match Analysis (HTML-Based)
 
-CricScore is a Python-based application that provides real-time cricket match analysis, including live score updates, commentary generation, and audio feedback. The application captures match data from live cricket websites, processes it using AI models, and generates audio commentary.
+CricScore is a Python-based application that provides real-time cricket match analysis, including live score updates, commentary generation, and audio feedback. The application now crawls HTML directly from cricket websites instead of taking screenshots, making it faster and more reliable.
 
 ## Features
 
-- Live score capture from cricket websites
-- Real-time image-based score analysis
-- AI-powered commentary generation
+- **HTML-based data extraction** from cricket websites (no more screenshots!)
+- Real-time score and commentary data crawling
+- AI-powered commentary enhancement
 - Text-to-speech conversion of commentary
 - Automatic monitoring of match updates
 - Support for multiple cricket match formats
+- Faster processing and reduced resource usage
 
 ## Prerequisites
 
 - Python 3.11 or higher
-- Chrome WebDriver (for Selenium)
-- CUDA-compatible GPU (optional, for faster processing)
+- Internet connection for web crawling
+- Optional: CUDA-compatible GPU (for faster TTS processing)
 
 ## Installation
 
@@ -25,24 +26,42 @@ git clone [repository-url]
 cd CricScore
 ```
 
-2. Install required packages:
+2. Create and activate virtual environment:
+```bash
+python3.11 -m venv crickScore_venv
+source crickScore_venv/bin/activate  # On macOS/Linux
+# or
+crickScore_venv\Scripts\activate  # On Windows
+```
+
+3. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Configure the application:
-   - Update the `config.properties` file with appropriate paths and URLs
-   - Ensure the Chrome WebDriver is installed for Selenium
+4. Configure the application:
+   - Update the `config.properties` file with appropriate URLs and paths
 
-## Project Structure
+## New Architecture (HTML-Based)
 
-- `config.properties` - Configuration settings for URLs, paths, and model parameters
-- `generateCommentry.py` - Generates audio commentary from match data
-- `getSSimages.py` - Captures screenshots of live match commentary
-- `getScoreSSimages.py` - Captures screenshots of live match scorecards
-- `image_infer_loop.py` - Processes captured images for commentary generation
-- `score_image_infer_loop.py` - Analyzes scorecard images for match statistics
-- `playCommentaryFiles.py` - Handles audio playback of generated commentary
+The application now uses HTML crawling instead of screenshot analysis:
+
+### Core Components
+
+1. **`getScoreHTML.py`** - Crawls live match scorecards from HTML
+2. **`getCommentaryHTML.py`** - Crawls live match commentary from HTML  
+3. **`score_data_processor.py`** - Processes and enhances score data
+4. **`commentary_data_processor.py`** - Enhances commentary for better TTS
+5. **`generateCommentry.py`** - Generates audio commentary from enhanced data
+6. **`playCommentaryFiles.py`** - Handles audio playback
+
+### Key Improvements
+
+- ✅ **No more screenshots** - Direct HTML parsing
+- ✅ **Faster processing** - No AI image analysis needed  
+- ✅ **More reliable** - Less dependent on page layout changes
+- ✅ **Better data extraction** - Structured HTML parsing
+- ✅ **Reduced resource usage** - No image processing overhead
 
 ## Configuration
 
@@ -50,62 +69,72 @@ The `config.properties` file contains important settings:
 
 ```properties
 [DEFAULT]
-IMAGE_FOLDER - Directory for storing captured images
-RESPONSE_FOLDER - Directory for processed JSON responses
-AUDIO_FOLDER - Directory for generated audio files
-MODEL_NAME - AI model name (default: gemma3:4b)
-CMTRY_URL - URL for live cricket commentary
-SCORE_URL - URL for live cricket scorecard
+# Data folders
+RESPONSE_FOLDER=/path/to/commentary/responses
+AUDIO_FOLDER=/path/to/audio/files
+SCORE_RESPONSE_FOLDER=/path/to/score/responses
+
+# AI Model
+MODEL_NAME=gemma3:4b
+
+# URLs for cricket data
+CMTRY_URL=https://www.cricbuzz.com/live-cricket-full-commentary/[match-id]
+SCORE_URL=https://www.cricbuzz.com/live-cricket-scorecard/[match-id]
 ```
 
 ## Usage
 
-### Quick Start (Windows)
+### Quick Start (macOS/Linux)
 
-To start all components in separate terminals with the virtual environment:
-
-1. First, ensure you have created and set up your virtual environment:
+1. Make the script executable and run:
 ```bash
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
+chmod +x run_all.sh
+./run_all.sh
 ```
 
-2. Run the PowerShell script:
+### Quick Start (Windows)
+
+1. Run the PowerShell script:
 ```powershell
 .\start_all.ps1
 ```
 
-This will open separate terminal windows for each component, each running in the virtual environment.
-
 ### Manual Start
 
-1. Start the score capture:
+Start each component in separate terminals:
+
+1. **Start score data crawling:**
 ```bash
-python getScoreSSimages.py
+python getScoreHTML.py
 ```
 
-2. Start the commentary capture:
+2. **Start commentary data crawling:**
 ```bash
-python getSSimages.py
+python getCommentaryHTML.py
 ```
 
-3. Start the image analysis:
+3. **Start data processors:**
 ```bash
-python score_image_infer_loop.py
-python image_infer_loop.py
+python score_data_processor.py
+python commentary_data_processor.py
 ```
 
-4. Generate and play commentary:
+4. **Generate and play commentary:**
 ```bash
 python generateCommentry.py
 python playCommentaryFiles.py
 ```
 
-Alternatively, use the provided shell script to start all components:
-```bash
-./run_all.sh
+## Data Flow
+
 ```
+Web Pages (HTML) → HTML Crawlers → JSON Data → Data Processors → Enhanced JSON → TTS → Audio → Playback
+```
+
+1. **HTML Crawlers** extract data from cricket websites
+2. **Data Processors** enhance and structure the data
+3. **TTS Generator** creates audio from enhanced commentary
+4. **Audio Player** plays the generated commentary
 
 ## Directory Structure
 
@@ -113,30 +142,86 @@ Alternatively, use the provided shell script to start all components:
 CricScore/
 ├── config.properties
 ├── requirements.txt
-├── run_all.sh
-├── resources/
-│   ├── commentry/
-│   │   ├── audio/
-│   │   ├── images/
-│   │   └── response/
-│   └── scores/
-│       ├── images/
-│       └── response/
+├── run_all.sh / start_all.ps1
+├── 
+├── # HTML Crawlers
+├── getScoreHTML.py
+├── getCommentaryHTML.py
+├── 
+├── # Data Processors  
+├── score_data_processor.py
+├── commentary_data_processor.py
+├── 
+├── # Audio Generation & Playback
+├── generateCommentry.py
+├── playCommentaryFiles.py
+├── 
+├── # Data Storage
+├── Resposes/
+│   ├── *.json (commentary data)
+│   └── audio-files/*.wav
+└── Scores/
+    └── Responses/*.json (score data)
 ```
 
 ## Dependencies
 
-- torch - PyTorch for AI processing
-- TTS - Text-to-speech conversion
-- watchdog - File system monitoring
-- ollama - AI model integration
-- configparser - Configuration management
-- selenium - Web automation
-- simpleaudio - Audio playback
-- Pillow - Image processing
+- **requests** - HTTP requests for web crawling
+- **beautifulsoup4** - HTML parsing and data extraction
+- **lxml** - Fast XML/HTML parser
+- **torch** - PyTorch for TTS processing
+- **TTS** - Text-to-speech conversion
+- **watchdog** - File system monitoring
+- **configparser** - Configuration management
+- **simpleaudio** - Audio playback
 
-## Note
+## Troubleshooting
 
-- Ensure all directory paths in `config.properties` are correctly set for your system
-- The application requires an active internet connection
-- Some features may require specific hardware capabilities (GPU) for optimal performance
+### Common Issues
+
+1. **Import errors for bs4**: Install beautifulsoup4
+   ```bash
+   pip install beautifulsoup4
+   ```
+
+2. **Network timeouts**: Check internet connection and URL accessibility
+
+3. **Audio not playing**: Ensure simpleaudio is properly installed
+
+4. **Data not updating**: Check if URLs in config.properties are correct
+
+### Logs and Monitoring
+
+- Each component prints timestamped logs
+- Monitor the console output for processing status
+- Check JSON files in response folders for data structure
+
+## Migration from Image-Based System
+
+If migrating from the old screenshot-based system:
+
+1. **Removed files** (no longer needed):
+   - `getSSimages.py` 
+   - `getScoreSSimages.py`
+   - `image_infer_loop.py`
+   - `score_image_infer_loop.py`
+
+2. **New files** (HTML-based):
+   - `getScoreHTML.py`
+   - `getCommentaryHTML.py` 
+   - `score_data_processor.py`
+   - `commentary_data_processor.py`
+
+3. **Updated configuration**: Remove image folders and add response folders
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test with live cricket data
+5. Submit a pull request
+
+## License
+
+[Your License Here]

@@ -25,10 +25,65 @@ def read_description_from_json(file_path):
         description = json_data.get("description")
         if not description:
             print(f"Error: 'description' field not found in {file_path}.")
-        return description
+            return None
+        
+        # Clean and validate the description for TTS
+        cleaned_description = clean_description_for_tts(description)
+        return cleaned_description
+        
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
         return None
+
+def clean_description_for_tts(text):
+    """Clean and prepare text for TTS to avoid audio generation errors."""
+    if not text:
+        return "Live cricket match continues with exciting action."
+    
+    # Remove markdown formatting
+    import re
+    text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)  # Remove bold
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)      # Remove italic
+    text = re.sub(r'#+ ', '', text)                 # Remove headers
+    
+    # Remove template placeholders and options
+    text = re.sub(r'Option \d+[^\n]*:\n*', '', text)
+    text = re.sub(r'\[Team[^\]]*\]', 'the team', text)
+    text = re.sub(r'\[Player[^\]]*\]', 'the player', text)
+    text = re.sub(r'\[[^\]]*\]', '', text)
+    
+    # Remove question sections
+    text = re.sub(r'To help me.*$', '', text, flags=re.DOTALL)
+    text = re.sub(r'---.*$', '', text, flags=re.DOTALL)
+    
+    # Clean up multiple newlines and spaces
+    text = re.sub(r'\n+', ' ', text)
+    text = re.sub(r'\s+', ' ', text)
+    text = text.strip()
+    
+    # Take only the first meaningful sentence if text is too long
+    sentences = text.split('.')
+    if len(sentences) > 1 and len(text) > 200:
+        # Take first 2 sentences
+        text = '. '.join(sentences[:2]) + '.'
+    
+    # Ensure minimum length for TTS model
+    if len(text) < 20:
+        text = f"Live cricket update: {text} The match continues with exciting action."
+    
+    # Ensure maximum length to avoid very long audio
+    if len(text) > 300:
+        text = text[:297] + "..."
+    
+    return text
+
+def safe_remove_file(file_path):
+    """Safely remove a file and handle any potential errors."""
+    try:
+        os.remove(file_path)
+        print(f"Successfully removed processed file: {os.path.basename(file_path)}")
+    except Exception as e:
+        print(f"Error removing file {file_path}: {e}")
 
 def generate_audio_from_json(input_json_file, output_audio_file):
     text_data = read_description_from_json(input_json_file)
@@ -37,6 +92,10 @@ def generate_audio_from_json(input_json_file, output_audio_file):
         try:
             tts.tts_to_file(text=text_data, file_path=output_audio_file)
             print(f"Audio file successfully saved to {output_audio_file}")
+            
+            # Remove the processed JSON file after successful audio generation
+            safe_remove_file(input_json_file)
+            
         except Exception as e:
             print(f"An error occurred during audio generation: {e}")
 

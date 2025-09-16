@@ -6,3 +6,6 @@ configparser
 selenium
 simpleaudio
 pillow
+beautifulsoup4
+requests
+lxml
