@@ -14,68 +14,74 @@ def parse_scorecard_html(html):
     """
     Parse the scorecard HTML and return a structured dict with all relevant info.
     """
+
     soup = BeautifulSoup(html, "html.parser")
     innings_data = []
     for inn_div in soup.find_all("div", id=lambda x: x and x.startswith("innings_")):
-        # Header: team name and score
+        # Find the header for team name and score
         header = inn_div.find("div", class_="cb-scrd-hdr-rw")
         if not header:
             continue
-        team_name = header.find_all("span")[0].get_text(strip=True)
-        score = header.find_all("span")[1].get_text(strip=True) if len(header.find_all("span")) > 1 else ""
+        spans = header.find_all("span")
+        team_name = spans[0].get_text(strip=True) if len(spans) > 0 else ""
+        score = spans[1].get_text(strip=True) if len(spans) > 1 else ""
 
-        # Batting table
         batsmen = []
-        bat_rows = inn_div.find_all("div", class_="cb-scrd-itms")
-        for row in bat_rows:
-            cols = row.find_all("div", recursive=False)
-            if len(cols) >= 7 and cols[0].find("a"):  # batsman row
-                batsmen.append({
-                    "name": cols[0].get_text(strip=True),
-                    "dismissal": cols[1].get_text(strip=True),
-                    "runs": cols[2].get_text(strip=True),
-                    "balls": cols[3].get_text(strip=True),
-                    "fours": cols[4].get_text(strip=True),
-                    "sixes": cols[5].get_text(strip=True),
-                    "sr": cols[6].get_text(strip=True)
-                })
-
-        # Extras, Total, Did not Bat
         extras = None
         total = None
         did_not_bat = []
-        for row in bat_rows:
-            cols = row.find_all("div", recursive=False)
-            if len(cols) >= 2 and "Extras" in cols[0].get_text():
-                extras = {
-                    "total": cols[1].get_text(strip=True),
-                    "breakdown": cols[2].get_text(strip=True) if len(cols) > 2 else ""
-                }
-            if len(cols) >= 2 and "Total" in cols[0].get_text():
-                total = {
-                    "total": cols[1].get_text(strip=True),
-                    "info": cols[2].get_text(strip=True) if len(cols) > 2 else ""
-                }
-            if len(cols) >= 2 and "Did not Bat" in cols[0].get_text():
-                did_not_bat = [a.get_text(strip=True) for a in cols[1].find_all("a")]
-
-        # Fall of Wickets
         fow = []
-        fow_header = inn_div.find("div", class_="cb-scrd-sub-hdr", string=lambda s: s and "Fall of Wickets" in s)
-        if fow_header:
-            fow_row = fow_header.find_next_sibling("div")
+        bowlers = []
+        powerplays = []
+
+        # Find all direct children after the header
+        ltst_hdrs = inn_div.find_all("div", class_="cb-ltst-wgt-hdr", recursive=False)
+        # Batting block is always the first cb-ltst-wgt-hdr
+        if ltst_hdrs:
+            bat_block = ltst_hdrs[0]
+            # Batting rows
+            for row in bat_block.find_all("div", class_="cb-scrd-itms", recursive=False):
+                cols = row.find_all("div", recursive=False)
+                # Batsman row
+                if len(cols) >= 7 and cols[0].find("a"):
+                    batsmen.append({
+                        "name": cols[0].get_text(strip=True),
+                        "dismissal": cols[1].get_text(strip=True),
+                        "runs": cols[2].get_text(strip=True),
+                        "balls": cols[3].get_text(strip=True),
+                        "fours": cols[4].get_text(strip=True),
+                        "sixes": cols[5].get_text(strip=True),
+                        "sr": cols[6].get_text(strip=True)
+                    })
+                # Extras
+                elif len(cols) >= 2 and "Extras" in cols[0].get_text():
+                    extras = {
+                        "total": cols[1].get_text(strip=True),
+                        "breakdown": cols[2].get_text(strip=True) if len(cols) > 2 else ""
+                    }
+                # Total
+                elif len(cols) >= 2 and "Total" in cols[0].get_text():
+                    total = {
+                        "total": cols[1].get_text(strip=True),
+                        "info": cols[2].get_text(strip=True) if len(cols) > 2 else ""
+                    }
+                # Yet to Bat / Did not Bat
+                elif len(cols) >= 2 and ("Yet to Bat" in cols[0].get_text() or "Did not Bat" in cols[0].get_text()):
+                    did_not_bat = [a.get_text(strip=True) for a in cols[1].find_all("a")]
+
+        # FOW block (after batting)
+        fow_hdr = inn_div.find("div", class_="cb-scrd-sub-hdr", string=lambda s: s and "Fall of Wickets" in s)
+        if fow_hdr:
+            fow_row = fow_hdr.find_next_sibling("div")
             if fow_row:
                 for span in fow_row.find_all("span"):
                     fow.append(span.get_text(strip=True))
 
-        # Bowling table
-        bowlers = []
-        bowl_header = inn_div.find("div", class_="cb-scrd-sub-hdr", string=lambda s: s and "Bowler" in s)
-        if bowl_header:
-            bowl_rows = []
-            next_row = bowl_header.find_next_sibling("div")
-            while next_row and "cb-scrd-itms" in next_row.get("class", []):
-                cols = next_row.find_all("div", recursive=False)
+        # Bowling block (second cb-ltst-wgt-hdr)
+        if len(ltst_hdrs) > 1:
+            bowl_block = ltst_hdrs[1]
+            for row in bowl_block.find_all("div", class_="cb-scrd-itms", recursive=False):
+                cols = row.find_all("div", recursive=False)
                 if len(cols) >= 8 and cols[0].find("a"):
                     bowlers.append({
                         "name": cols[0].get_text(strip=True),
@@ -87,13 +93,12 @@ def parse_scorecard_html(html):
                         "wd": cols[6].get_text(strip=True),
                         "eco": cols[7].get_text(strip=True)
                     })
-                next_row = next_row.find_next_sibling("div")
 
-        # Powerplays
-        powerplays = []
-        pp_header = inn_div.find("div", class_="cb-scrd-sub-hdr", string=lambda s: s and "Powerplays" in s)
-        if pp_header:
-            pp_row = pp_header.find_next_sibling("div")
+        # Powerplays block (third cb-ltst-wgt-hdr or after bowling)
+        # Find the cb-scrd-sub-hdr with Powerplays
+        pp_hdr = inn_div.find("div", class_="cb-scrd-sub-hdr", string=lambda s: s and "Powerplays" in s)
+        if pp_hdr:
+            pp_row = pp_hdr.find_next_sibling("div")
             if pp_row:
                 pp_cols = pp_row.find_all("div", recursive=False)
                 if len(pp_cols) == 3:
@@ -115,16 +120,19 @@ def parse_scorecard_html(html):
             "powerplays": powerplays
         })
 
-    # Match Info
+    # Match Info (outside innings)
     match_info = {}
-    info_section = soup.find("div", class_="cb-col cb-col-100")
-    if info_section:
-        for itm in info_section.find_all("div", class_="cb-mtch-info-itm"):
-            cols = itm.find_all("div", recursive=False)
-            if len(cols) == 2:
-                key = cols[0].get_text(strip=True)
-                val = cols[1].get_text(strip=True)
-                match_info[key] = val
+    # Find the last cb-col cb-col-100 with cb-mtch-info-itm children
+    info_sections = soup.find_all("div", class_="cb-col cb-col-100")
+    for info_section in reversed(info_sections):
+        if info_section.find("div", class_="cb-mtch-info-itm"):
+            for itm in info_section.find_all("div", class_="cb-mtch-info-itm"):
+                cols = itm.find_all("div", recursive=False)
+                if len(cols) == 2:
+                    key = cols[0].get_text(strip=True)
+                    val = cols[1].get_text(strip=True)
+                    match_info[key] = val
+            break
 
     return {
         "innings": innings_data,

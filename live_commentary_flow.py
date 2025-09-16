@@ -118,7 +118,9 @@ def generate_audio_and_play(in_path, audio_dir):
     print(f"Audio saved to {audio_path_mp3}")
     # Convert MP3 to WAV for simpleaudio
     sound = AudioSegment.from_mp3(audio_path_mp3)
-    sound.export(audio_path_wav, format="wav")
+    # Export as PCM 16-bit mono 44100Hz WAV for simpleaudio compatibility
+    sound = sound.set_frame_rate(44100).set_channels(1).set_sample_width(2)
+    sound.export(audio_path_wav, format="wav", parameters=["-acodec", "pcm_s16le", "-ac", "1", "-ar", "44100"])
     print(f"Playing audio...")
     wave_obj = sa.WaveObject.from_wave_file(audio_path_wav)
     play_obj = wave_obj.play()
