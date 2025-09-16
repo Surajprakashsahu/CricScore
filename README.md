@@ -1,3 +1,28 @@
+## Running the Front End (Live Web Scoreboard & Audio)
+
+You can serve the live scoreboard and commentary audio web page using Python's built-in HTTP server. This allows you to view the live score and listen to commentary from any device on your network.
+
+### Start the Front End Server
+
+From the project root directory, run:
+
+```sh
+python -m http.server 8080 --bind 0.0.0.0
+```
+
+This will serve all files (including `score_live_stream.html` and audio) at [http://localhost:8080/](http://localhost:8080/).
+
+### Open the Live Scoreboard
+
+- On your computer: Open [http://localhost:8080/score_live_stream.html](http://localhost:8080/score_live_stream.html)
+- On your mobile (same WiFi): Find your computer's IP (e.g., `192.168.1.10`) and open:
+   ```
+   http://<your-computer-ip>:8080/score_live_stream.html
+   ```
+   (Replace `<your-computer-ip>` with your actual IP address.)
+
+The page will auto-refresh and play the latest Hindi commentary audio as soon as it's available.
+
 # CricScore - Live Cricket Match Analysis (HTML-Based)
 
 CricScore is a Python-based application that provides real-time cricket match analysis, including live score updates, commentary generation, and audio feedback. The application now crawls HTML directly from cricket websites instead of taking screenshots, making it faster and more reliable.
@@ -178,11 +203,9 @@ CricScore/
 ## Troubleshooting
 
 ### Common Issues
-
 1. **Import errors for bs4**: Install beautifulsoup4
    ```bash
    pip install beautifulsoup4
-   ```
 
 2. **Network timeouts**: Check internet connection and URL accessibility
 

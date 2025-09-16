@@ -1,3 +1,25 @@
+<!-- Commentary Audio Player -->
+<audio id="commentaryAudio" controls autoplay>
+    <source src="resource/cmtry-audio/last_6_balls_commentary_hi_1.mp3?ts=0" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<script>
+let lastTimestamp = 0;
+function checkForNewAudio() {
+    fetch('resource/cmtry-audio/last_6_balls_commentary_hi_1.mp3', { method: 'HEAD' })
+        .then(response => {
+            const newTimestamp = new Date(response.headers.get('Last-Modified')).getTime();
+            if (newTimestamp > lastTimestamp) {
+                lastTimestamp = newTimestamp;
+                const audio = document.getElementById('commentaryAudio');
+                audio.src = 'resource/cmtry-audio/last_6_balls_commentary_hi_1.mp3?ts=' + Date.now();
+                audio.load();
+                audio.play();
+            }
+        });
+}
+setInterval(checkForNewAudio, 10000); // Check every 10 seconds
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +42,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 32px;
+            gap: 16px;
             margin-bottom: 32px;
+            flex-direction: row;
         }
         .team-logo {
             width: 64px; height: 64px;
@@ -158,7 +181,11 @@
         @media (max-width: 900px) {
             .scoreboard-card { flex-direction: column; align-items: center; gap: 24px; }
             .team-block { min-width: 90vw; }
-            .match-header { flex-direction: column; gap: 12px; }
+            .match-header {
+                flex-direction: row;
+                gap: 8px;
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
@@ -189,11 +216,11 @@ function renderMatchHeader(data) {
     const t2 = data.innings[1].team;
     const t1init = getTeamInitial(t1);
     const t2init = getTeamInitial(t2);
-    // If you have team logos, replace the initials with <img src=...>
+    // Render in a single line: team1 VS team2
     document.getElementById('match-header').innerHTML = `
-        <div class="team-logo">${t1init}</div>
-        <div class="vs">VS</div>
-        <div class="team-logo">${t2init}</div>
+        <span class="team-logo">${t1init}</span>
+        <span class="vs">VS</span>
+        <span class="team-logo">${t2init}</span>
     `;
 }
 
@@ -236,8 +263,12 @@ function renderScoreboard(data) {
         document.getElementById('scoreboard').innerHTML = html;
         return;
     }
-    // Show both teams side by side
-    html = data.innings.map(renderTeamBlock).join('');
+    // For mobile: show second innings first
+    let inningsArr = data.innings.slice();
+    if (window.innerWidth <= 900 && inningsArr.length > 1) {
+        inningsArr = [inningsArr[1], inningsArr[0]];
+    }
+    html = inningsArr.map(renderTeamBlock).join('');
     document.getElementById('scoreboard').innerHTML = html;
 }
 
